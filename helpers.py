@@ -4,6 +4,8 @@ Created on Jan 9, 2017
 @author: jfinn
 '''
 import math
+from _functools import reduce
+import operator
 
 def get_prime_factors(num, primes=[2]):
     factors = []
@@ -30,3 +32,18 @@ def is_prime(num, primes=[2]):
     else:
         return False
 
+def get_proper_divisors(num):
+    factors = [1]
+    max_factor = int(math.sqrt(num))
+    for div in range(2, max_factor + 1):
+        if num % div == 0:
+            factors.append(div)
+            if div**2 != num:
+                factors.append(num // div)
+    return factors
+
+def sum_proper_divisors(num):
+    return reduce(operator.add, get_proper_divisors(num))
+    
+def is_abundant(num):
+    return sum_proper_divisors(num) > num
